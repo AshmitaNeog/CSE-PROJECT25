@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  background: #0b0f1a;
+}
+
+.header {
+  background: linear-gradient(90deg, #000000, #1a1a1a);
+  padding: 0 24px;
+}
+
+.content {
+  padding: 24px;
+  background: #000;
+  min-height: calc(100vh - 64px);
+}
+
+.stat-card {
+  background: #111;
+  color: white;
+  border-radius: 8px;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.stat-number.red {
+  color: #ff4d4f;
+}
+
+.timeline-card {
+  background: #111;
+  color: white;
+}
+
+/* Fix Ant Design Card titles on dark background */
+.ant-card-head-title {
+  color: white !important;
+  font-weight: 600;
+}
