@@ -19,6 +19,13 @@ import axios from "axios";
 const { Title } = Typography;
 
 const COLORS = ["#00C49F", "#0088FE", "#FFBB28", "#FF4444", "#AA66CC"];
+const PROTOCOL_COLORS = {
+  TCP: "#FFBB28",
+  UDP: "#FF4444",
+  ICMP: "#0088FE",
+  OTHER: "#00C49F",
+};
+
 
 export default function ProtocolStats() {
   const [protocolData, setProtocolData] = useState([]);
@@ -30,14 +37,15 @@ export default function ProtocolStats() {
       const protocols = res.data.protocols;
 
       const formatted = Object.keys(protocols).map((key) => ({
-        protocol:
-          key === "6"
-            ? "TCP"
-            : key === "17"
-            ? "UDP"
-            : key === "1"
-            ? "ICMP"
-            : "OTHER",
+      protocol:
+        key === "6" || key === "TCP"
+          ? "TCP"
+          : key === "17" || key === "UDP"
+          ? "UDP"
+          : key === "1" || key === "ICMP"
+          ? "ICMP"
+          : "OTHER",
+
         count: protocols[key],
       }));
 
@@ -70,19 +78,23 @@ export default function ProtocolStats() {
           >
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
-                <Pie
-                  data={protocolData}
-                  dataKey="count"
-                  nameKey="protocol"
-                  outerRadius={110}
-                  label
-                >
-                  {protocolData.map((_, index) => (
-                    <Cell
-                      key={index}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
+            <Pie
+              key={JSON.stringify(protocolData)}   // 🔑 FORCE RE-RENDER
+              data={protocolData}
+              dataKey="count"
+              nameKey="protocol"
+              outerRadius={110}
+              label
+            >
+
+                {protocolData.map((entry, index) => (
+                  <Cell
+                    key={index}
+                    fill={PROTOCOL_COLORS[entry.protocol] || "#8884d8"}
+                  />
+                ))}
+
+
                 </Pie>
                 <Tooltip />
                 <Legend />
@@ -95,14 +107,23 @@ export default function ProtocolStats() {
         <Col span={12}>
           <Card
             title="Protocol Mix (Total Count)"
-            className="timeline-card"
+            className="timeline-card" 
           >
+
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={protocolData}>
                 <XAxis dataKey="protocol" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="count" fill="#00C49F" />
+                <Bar dataKey="count">
+                  {protocolData.map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={PROTOCOL_COLORS[entry.protocol] || "#8884d8"}
+                    />
+                  ))}
+                </Bar>
+
               </BarChart>
             </ResponsiveContainer>
           </Card>

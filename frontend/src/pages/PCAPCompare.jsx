@@ -35,7 +35,7 @@ function PCAPCompare() {
   }
 
   try {
-    const response = await fetch("http://localhost:5000/compare", {
+      const response = await fetch("http://127.0.0.1:5000/compare", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
